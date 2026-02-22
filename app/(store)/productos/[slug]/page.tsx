@@ -13,7 +13,7 @@ export default async function ProductoDetallePage({
 
   const { data: producto } = await supabase
     .from('products')
-    .select('*, categories(name, slug)')
+    .select('*, categories(name, slug), product_images(url)')
     .eq('slug', slug)
     .eq('is_active', true)
     .single()
@@ -35,8 +35,16 @@ export default async function ProductoDetallePage({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
         {/* Imagen */}
-        <div className="bg-gray-100 rounded-2xl h-96 flex items-center justify-center">
-          <span className="text-gray-400">Sin imagen</span>
+        <div className="bg-gray-100 rounded-2xl h-96 flex items-center justify-center overflow-hidden">
+          {producto.product_images?.[0]?.url ? (
+            <img
+              src={producto.product_images[0].url}
+              alt={producto.name}
+              className="w-full h-full object-cover rounded-2xl"
+            />
+          ) : (
+            <span className="text-gray-400">Sin imagen</span>
+          )}
         </div>
 
         {/* Info */}
@@ -80,7 +88,6 @@ export default async function ProductoDetallePage({
           {/* Descripción */}
           <p className="text-gray-600 mb-8 leading-relaxed">{producto.description}</p>
 
-          {/* Botón */}
           <AddToCartButton product={producto} />
         </div>
       </div>
