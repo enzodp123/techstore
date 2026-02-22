@@ -32,7 +32,7 @@ export default function CarritoPage() {
             <div key={item.id} className="flex items-center gap-4 bg-white border border-gray-200 rounded-xl p-4">
               
               {/* Imagen placeholder */}
-              <div className="bg-gray-100 rounded-lg w-20 h-20 flex items-center justify-center flex-shrink-0">
+              <div className="bg-gray-100 rounded-lg w-20 h-20 flex items-center justify-center shrink-0">
                 <ShoppingBag size={24} className="text-gray-400" />
               </div>
 

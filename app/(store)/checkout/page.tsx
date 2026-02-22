@@ -38,18 +38,37 @@ export default function CheckoutPage() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async () => {
-    if (!form.nombre || !form.email || !form.direccion || !form.ciudad) {
-      alert('Por favor completá todos los campos obligatorios')
-      return
-    }
-    setLoading(true)
-    // Por ahora simulamos el pago — acá después va MercadoPago
-    setTimeout(() => {
-      clearCart()
-      router.push('/checkout/gracias')
-    }, 1500)
+const handleSubmit = async () => {
+  if (!form.nombre || !form.email || !form.direccion || !form.ciudad) {
+    alert('Por favor completá todos los campos obligatorios')
+    return
   }
+  setLoading(true)
+
+  try {
+    const res = await fetch('/api/pagos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items,
+        payer: form,
+      }),
+    })
+
+    const data = await res.json()
+
+    if (data.init_point) {
+      window.location.href = data.init_point // redirige a MercadoPago
+    } else {
+      alert('Error al procesar el pago')
+      setLoading(false)
+    }
+  } catch (error) {
+    console.error(error)
+    alert('Error al conectar con MercadoPago')
+    setLoading(false)
+  }
+}
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
@@ -121,7 +140,7 @@ export default function CheckoutPage() {
             {items.map((item) => (
               <div key={item.id} className="flex justify-between text-sm text-gray-600">
                 <span className="truncate mr-2">{item.name} x{item.quantity}</span>
-                <span className="flex-shrink-0">${(item.price * item.quantity).toLocaleString('es-AR')}</span>
+                <span className="shrink-0">${(item.price * item.quantity).toLocaleString('es-AR')}</span>
               </div>
             ))}
           </div>
