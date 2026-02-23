@@ -5,10 +5,12 @@ import { useCartStore } from '@/store/cartStore'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ShoppingBag } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 export default function CheckoutPage() {
   const { items, total, clearCart } = useCartStore()
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   const [form, setForm] = useState({
     nombre: '',
@@ -19,8 +21,6 @@ export default function CheckoutPage() {
     provincia: '',
     codigoPostal: '',
   })
-
-  const [loading, setLoading] = useState(false)
 
   if (items.length === 0) {
     return (
@@ -38,45 +38,67 @@ export default function CheckoutPage() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-const handleSubmit = async () => {
-  if (!form.nombre || !form.email || !form.direccion || !form.ciudad) {
-    alert('Por favor completá todos los campos obligatorios')
-    return
-  }
-  setLoading(true)
+  const handleSubmit = async () => {
+    if (!form.nombre || !form.email || !form.direccion || !form.ciudad) {
+      alert('Por favor completá todos los campos obligatorios')
+      return
+    }
+    setLoading(true)
 
-  try {
-    const res = await fetch('/api/pagos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        items,
-        payer: form,
-      }),
-    })
+    try {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
 
-    const data = await res.json()
+      const { data: orden, error: ordenError } = await supabase
+        .from('orders')
+        .insert({
+          user_id: user?.id || null,
+          status: 'pending',
+          subtotal: total(),
+          total: total(),
+          shipping_data: form,
+        })
+        .select()
+        .single()
 
-    if (data.init_point) {
-      window.location.href = data.init_point // redirige a MercadoPago
-    } else {
-      alert('Error al procesar el pago')
+      if (ordenError) throw ordenError
+
+      await supabase.from('order_items').insert(
+        items.map((item) => ({
+          order_id: orden.id,
+          product_id: item.id,
+          quantity: item.quantity,
+          unit_price: item.price,
+          subtotal: item.price * item.quantity,
+        }))
+      )
+
+      const res = await fetch('/api/pagos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items, payer: form }),
+      })
+
+      const data = await res.json()
+
+      if (data.init_point) {
+        window.location.href = data.init_point
+      } else {
+        alert('Error al procesar el pago')
+        setLoading(false)
+      }
+    } catch (error) {
+      console.error(error)
+      alert('Error al procesar la orden')
       setLoading(false)
     }
-  } catch (error) {
-    console.error(error)
-    alert('Error al conectar con MercadoPago')
-    setLoading(false)
   }
-}
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
       <h1 className="text-3xl font-bold text-gray-800 mb-8">Finalizar compra</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-        {/* Formulario */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white border border-gray-200 rounded-xl p-6">
             <h2 className="text-lg font-bold text-gray-800 mb-4">Datos de contacto</h2>
@@ -133,14 +155,13 @@ const handleSubmit = async () => {
           </div>
         </div>
 
-        {/* Resumen */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 h-fit">
           <h2 className="text-xl font-bold text-gray-800 mb-4">Resumen</h2>
           <div className="space-y-2 mb-4">
             {items.map((item) => (
               <div key={item.id} className="flex justify-between text-sm text-gray-600">
                 <span className="truncate mr-2">{item.name} x{item.quantity}</span>
-                <span className="shrink-0">${(item.price * item.quantity).toLocaleString('es-AR')}</span>
+                <span className="flex-shrink-0">${(item.price * item.quantity).toLocaleString('es-AR')}</span>
               </div>
             ))}
           </div>
@@ -148,15 +169,12 @@ const handleSubmit = async () => {
             <span>Total</span>
             <span>${total().toLocaleString('es-AR')}</span>
           </div>
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-4 rounded-xl font-semibold transition-colors"
-          >
+          <button onClick={handleSubmit} disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-4 rounded-xl font-semibold transition-colors">
             {loading ? 'Procesando...' : 'Confirmar pedido'}
           </button>
           <p className="text-xs text-gray-400 text-center mt-3">
-            Próximamente integración con MercadoPago
+            Serás redirigido a MercadoPago
           </p>
         </div>
       </div>
