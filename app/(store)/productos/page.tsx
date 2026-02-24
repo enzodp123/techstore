@@ -1,3 +1,5 @@
+export const revalidate = 60 // en segundos
+
 import { createClient } from '@/lib/supabase/server'
 import ProductCard from '@/components/store/ProductCard'
 

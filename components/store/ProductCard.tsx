@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { ShoppingCart } from 'lucide-react'
 
 type Product = {
@@ -22,7 +23,13 @@ export default function ProductCard({ product }: { product: Product }) {
     <Link href={`/productos/${product.slug}`} className="group border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all bg-white">
       <div className="relative bg-gray-100 h-48 flex items-center justify-center overflow-hidden">
         {product.product_images?.[0]?.url ? (
-          <img src={product.product_images[0].url} alt={product.name} className="w-full h-full object-cover" />
+          <Image 
+            src={product.product_images[0].url} 
+            alt={product.name} 
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+            className="object-cover" 
+          />
         ) : (
           <span className="text-gray-400 text-sm">Sin imagen</span>
         )}

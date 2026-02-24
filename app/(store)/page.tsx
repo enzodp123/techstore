@@ -64,3 +64,13 @@ export default function HomePage() {
     </div>
   )
 }
+
+export const metadata = {
+  title: 'TechStore — Hardware de computación',
+  description: 'Los mejores componentes al mejor precio',
+}
+
+export const revalidate = 60 // en segundos
+
+// Este archivo es el entry point de la sección "store". Si quieres agregar contenido común a todas las páginas de esta sección, hazlo aquí.
+
