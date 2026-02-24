@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, Cpu, Monitor, MemoryStick, HardDrive } from 'lucide-react'
-
+export const revalidate = 3600
 const categorias = [
   { nombre: 'Procesadores', slug: 'procesadores', icono: Cpu, color: 'bg-blue-500' },
   { nombre: 'Placas de Video', slug: 'placas-de-video', icono: Monitor, color: 'bg-purple-500' },
@@ -70,7 +70,6 @@ export const metadata = {
   description: 'Los mejores componentes al mejor precio',
 }
 
-export const revalidate = 60 // en segundos
 
 // Este archivo es el entry point de la sección "store". Si quieres agregar contenido común a todas las páginas de esta sección, hazlo aquí.
 

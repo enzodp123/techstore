@@ -1,7 +1,9 @@
-export const revalidate = 60 // en segundos
+
 
 import { createClient } from '@/lib/supabase/server'
 import ProductCard from '@/components/store/ProductCard'
+
+export const revalidate = 60 // en segundos
 
 export default async function ProductosPage() {
   const supabase = await createClient()
