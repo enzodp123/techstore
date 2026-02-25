@@ -22,9 +22,9 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center z-10">
           <div className="space-y-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest animate-in fade-in slide-in-from-left-4 duration-500">
-              <Zap size={14} /> Nueva Generación 2024
+              <Zap size={14} /> Nueva Generación 2026
             </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter animate-in fade-in slide-in-from-left-6 duration-700">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-none animate-in fade-in slide-in-from-left-6 duration-700">
               POTENCIA <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-indigo-400 to-purple-500">
                 SIN LÍMITES

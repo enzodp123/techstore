@@ -20,10 +20,18 @@ export default async function ProductosPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold text-gray-800 mb-2">Productos</h1>
-      <p className="text-gray-500 mb-8">{productos.length} productos encontrados</p>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="max-w-7xl mx-auto px-4 pt-32 pb-16">
+      <div className="mb-12">
+        <h1 className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tight">
+          PRODUCTOS
+        </h1>
+        <div className="h-1 w-20 bg-blue-600 rounded-full mb-4" />
+        <p className="text-zinc-500 font-medium tracking-wide uppercase text-xs">
+          {productos.length} items disponibles
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {productos.map((producto) => (
           <ProductCard key={producto.id} product={producto} />
         ))}

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ShoppingCart } from 'lucide-react'
+import AddToCartButton from './AddToCartButton'
 
 type Product = {
   id: string
@@ -20,52 +20,74 @@ export default function ProductCard({ product }: { product: Product }) {
     : null
 
   return (
-    <Link href={`/productos/${product.slug}`} className="group border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all bg-white">
-      <div className="relative bg-gray-100 h-48 flex items-center justify-center overflow-hidden">
+    <Link
+      href={`/productos/${product.slug}`}
+      className="group relative flex flex-col h-full bg-zinc-900/40 backdrop-blur-md border border-zinc-800/50 rounded-2xl overflow-hidden hover:border-blue-500/50 hover:shadow-[0_0_20px_rgba(37,99,235,0.15)] transition-all duration-300"
+    >
+      <div className="relative aspect-square bg-zinc-800/30 flex items-center justify-center overflow-hidden">
         {product.product_images?.[0]?.url ? (
-          <Image 
-            src={product.product_images[0].url} 
-            alt={product.name} 
+          <Image
+            src={product.product_images[0].url}
+            alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-            className="object-cover" 
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <span className="text-gray-400 text-sm">Sin imagen</span>
+          <div className="flex flex-col items-center gap-2 opacity-20">
+            <div className="w-12 h-12 border-2 border-dashed border-zinc-500 rounded-lg flex items-center justify-center">
+              <span className="text-xl font-bold">?</span>
+            </div>
+            <span className="text-zinc-500 text-xs font-medium uppercase tracking-widest">Sin imagen</span>
+          </div>
         )}
-        {descuento && (
-          <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-            -{descuento}%
-          </span>
-        )}
-        {product.is_featured && (
-          <span className="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-            Destacado
-          </span>
-        )}
-      </div>
-      <div className="p-4">
-        <p className="text-xs text-gray-400 mb-1">{product.brand}</p>
-        <h3 className="font-semibold text-gray-800 text-sm mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
-          {product.name}
-        </h3>
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-lg font-bold text-gray-900">
-            ${product.price.toLocaleString('es-AR')}
-          </span>
-          {product.compare_price && (
-            <span className="text-sm text-gray-400 line-through">
-              ${product.compare_price.toLocaleString('es-AR')}
+
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
+          {descuento && (
+            <span className="bg-red-500/90 backdrop-blur-sm text-white text-[10px] font-black px-2 py-1 rounded-md shadow-lg">
+              -{descuento}%
+            </span>
+          )}
+          {product.is_featured && (
+            <span className="bg-blue-500/90 backdrop-blur-sm text-white text-[10px] font-black px-2 py-1 rounded-md shadow-lg">
+              DESTACADO
             </span>
           )}
         </div>
-        <p className={`text-xs mb-3 ${product.stock > 0 ? 'text-green-600' : 'text-red-500'}`}>
-          {product.stock > 0 ? `${product.stock} en stock` : 'Sin stock'}
-        </p>
-        <button className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition-colors">
-          <ShoppingCart size={16} />
-          Agregar al carrito
-        </button>
+      </div>
+
+      <div className="p-5 flex flex-col flex-grow">
+        <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1.5">{product.brand}</p>
+        <h3 className="font-medium text-white text-sm mb-3 group-hover:text-blue-400 transition-colors line-clamp-2 min-h-[2.5rem] leading-snug">
+          {product.name}
+        </h3>
+
+        <div className="mt-auto">
+          <div className="flex items-baseline gap-2 mb-3">
+            <span className="text-xl font-bold text-white tracking-tight">
+              ${product.price.toLocaleString('es-AR')}
+            </span>
+            {product.compare_price && (
+              <span className="text-xs text-zinc-500 line-through decoration-zinc-600">
+                ${product.compare_price.toLocaleString('es-AR')}
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between gap-2 mb-4">
+            <div className={`flex items-center gap-1.5 text-[10px] font-medium ${product.stock > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+              <div className={`w-1 h-1 rounded-full ${product.stock > 0 ? 'bg-emerald-400 shadow-[0_0_5px_rgba(52,211,153,0.5)]' : 'bg-red-400'}`} />
+              {product.stock > 0 ? `${product.stock} DISPONIBLES` : 'SIN STOCK'}
+            </div>
+          </div>
+
+          <AddToCartButton
+            product={product}
+            className="py-2.5 rounded-xl text-[10px]"
+            showIcon={true}
+          />
+        </div>
       </div>
     </Link>
   )
