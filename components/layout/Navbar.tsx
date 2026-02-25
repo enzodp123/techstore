@@ -30,62 +30,79 @@ export default function Navbar() {
   }
 
   return (
-    <header className="bg-gray-900 text-white sticky top-0 z-50 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl text-blue-400">
-          <Cpu size={24} /> TechStore
+    <header className="fixed top-4 left-0 right-0 z-50 px-4">
+      <div className="max-w-7xl mx-auto glass rounded-2xl px-6 py-4 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2 font-bold text-2xl tracking-tight text-white group">
+          <div className="p-1.5 bg-blue-600 rounded-lg group-hover:rotate-12 transition-transform">
+            <Cpu size={20} className="text-white" />
+          </div>
+          Tech<span className="text-blue-500">Store</span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm">
-          <Link href="/productos" className="hover:text-blue-400 transition-colors">Productos</Link>
-          <Link href="/categorias/procesadores" className="hover:text-blue-400 transition-colors">Procesadores</Link>
-          <Link href="/categorias/placas-de-video" className="hover:text-blue-400 transition-colors">Placas de Video</Link>
-          <Link href="/categorias/memoria-ram" className="hover:text-blue-400 transition-colors">Memoria RAM</Link>
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+          <Link href="/productos" className="text-gray-300 hover:text-white transition-colors">Productos</Link>
+          <Link href="/categorias/procesadores" className="text-gray-300 hover:text-white transition-colors">Procesadores</Link>
+          <Link href="/categorias/placas-de-video" className="text-gray-300 hover:text-white transition-colors">Placas</Link>
+          <Link href="/categorias/memoria-ram" className="text-gray-300 hover:text-white transition-colors">RAM</Link>
         </nav>
 
-        <div className="flex items-center gap-4">
-          <Link href="/productos" className="hover:text-blue-400 transition-colors">
-            <Search size={20} />
+        <div className="flex items-center gap-5">
+          <Link href="/productos" className="text-gray-300 hover:text-white transition-colors relative group">
+            <Search size={22} />
+            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all" />
           </Link>
-          <Link href="/carrito" className="relative hover:text-blue-400 transition-colors">
-            <ShoppingCart size={20} />
-            <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+
+          <Link href="/carrito" className="relative text-gray-300 hover:text-white transition-colors group">
+            <ShoppingCart size={22} />
+            <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center ring-2 ring-black">
               {totalItems}
             </span>
           </Link>
 
+          <div className="h-6 w-px bg-white/10 hidden md:block" />
+
           {user ? (
-            <div className="hidden md:flex items-center gap-3">
-              <Link href="/dashboard" className="flex items-center gap-1 text-sm text-gray-300 hover:text-white transition-colors">
-                <User size={16} /> {user.email?.split('@')[0]}
+            <div className="hidden md:flex items-center gap-4">
+              <Link href="/dashboard" className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors">
+                <div className="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
+                  <User size={14} className="text-blue-400" />
+                </div>
+                <span className="hidden lg:inline">{user.email?.split('@')[0]}</span>
               </Link>
-              <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 transition-colors">
+              <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 transition-colors p-1">
                 <LogOut size={18} />
               </button>
             </div>
           ) : (
-            <Link href="/login" className="hidden md:block bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm transition-colors">
+            <Link href="/login" className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm font-semibold transition-all hover:shadow-[0_0_20px_rgba(37,99,235,0.4)]">
               Ingresar
             </Link>
           )}
 
-          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          <button className="md:hidden text-white" onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
       </div>
 
+      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-gray-800 px-4 py-4 flex flex-col gap-4 text-sm">
-          <Link href="/productos" onClick={() => setMenuOpen(false)}>Productos</Link>
-          <Link href="/categorias/procesadores" onClick={() => setMenuOpen(false)}>Procesadores</Link>
-          <Link href="/categorias/placas-de-video" onClick={() => setMenuOpen(false)}>Placas de Video</Link>
-          <Link href="/categorias/memoria-ram" onClick={() => setMenuOpen(false)}>Memoria RAM</Link>
+        <div className="absolute top-20 left-4 right-4 md:hidden glass rounded-2xl p-6 flex flex-col gap-6 text-base animate-in fade-in slide-in-from-top-4 duration-300">
+          <Link href="/productos" className="text-gray-300 hover:text-white" onClick={() => setMenuOpen(false)}>Productos</Link>
+          <div className="h-px bg-white/10" />
+          <Link href="/categorias/procesadores" className="text-gray-300 hover:text-white" onClick={() => setMenuOpen(false)}>Procesadores</Link>
+          <Link href="/categorias/placas-de-video" className="text-gray-300 hover:text-white" onClick={() => setMenuOpen(false)}>Placas de Video</Link>
+          <Link href="/categorias/memoria-ram" className="text-gray-300 hover:text-white" onClick={() => setMenuOpen(false)}>Memoria RAM</Link>
+          <div className="h-px bg-white/10" />
           {user ? (
-            <button onClick={handleLogout} className="text-left text-red-400">Cerrar sesión</button>
+            <>
+              <Link href="/dashboard" className="text-gray-300 hover:text-white" onClick={() => setMenuOpen(false)}>Dashboard</Link>
+              <button onClick={handleLogout} className="text-left text-red-500 font-medium">Cerrar sesión</button>
+            </>
           ) : (
-            <Link href="/login" onClick={() => setMenuOpen(false)}>Ingresar</Link>
+            <Link href="/login" className="bg-blue-600 text-white text-center py-3 rounded-xl font-semibold" onClick={() => setMenuOpen(false)}>
+              Ingresar
+            </Link>
           )}
         </div>
       )}
