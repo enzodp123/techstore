@@ -2,11 +2,12 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { ShoppingCart, Menu, X, Search, Cpu, User, LogOut } from 'lucide-react'
+import { ShoppingCart, Menu, X, Cpu, User, LogOut, Package } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { User as SupabaseUser } from '@supabase/supabase-js'
+import SearchBar from '@/components/store/SearchBar'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -46,11 +47,8 @@ export default function Navbar() {
           <Link href="/categorias/memoria-ram" className="text-gray-300 hover:text-white transition-colors">RAM</Link>
         </nav>
 
-        <div className="flex items-center gap-5">
-          <Link href="/productos" className="text-gray-300 hover:text-white transition-colors relative group">
-            <Search size={22} />
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all" />
-          </Link>
+        <div className="flex items-center gap-5 relative z-50">
+          <SearchBar />
 
           <Link href="/carrito" className="relative text-gray-300 hover:text-white transition-colors group">
             <ShoppingCart size={22} />
@@ -63,13 +61,20 @@ export default function Navbar() {
 
           {user ? (
             <div className="hidden md:flex items-center gap-4">
-              <Link href="/dashboard" className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors">
-                <div className="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
+              {/* Dashboard para Admin (basado en que el email provenga de alguna lista, aquí lo mostramos siempre pero el middleware lo protege) */}
+              <Link href="/dashboard" className="text-gray-400 hover:text-white transition-colors p-1" title="Panel de Administración">
+                <div className="w-8 h-8 rounded-full bg-blue-600/10 border border-blue-500/20 flex items-center justify-center hover:bg-blue-600/20">
                   <User size={14} className="text-blue-400" />
                 </div>
-                <span className="hidden lg:inline">{user.email?.split('@')[0]}</span>
               </Link>
-              <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 transition-colors p-1">
+
+              {/* Mis Compras para Clientes */}
+              <Link href="/mis-compras" className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg hover:bg-white/10">
+                <Package size={14} className="text-blue-400" />
+                <span className="hidden lg:inline">Mis Compras</span>
+              </Link>
+
+              <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 transition-colors p-1 ml-2" title="Cerrar sesión">
                 <LogOut size={18} />
               </button>
             </div>
@@ -96,7 +101,12 @@ export default function Navbar() {
           <div className="h-px bg-white/10" />
           {user ? (
             <>
-              <Link href="/dashboard" className="text-gray-300 hover:text-white" onClick={() => setMenuOpen(false)}>Dashboard</Link>
+              <Link href="/mis-compras" className="text-gray-300 hover:text-white flex items-center gap-2" onClick={() => setMenuOpen(false)}>
+                <Package size={18} /> Mis Compras
+              </Link>
+              <Link href="/dashboard" className="text-gray-300 hover:text-white flex items-center gap-2" onClick={() => setMenuOpen(false)}>
+                <User size={18} /> Administración
+              </Link>
               <button onClick={handleLogout} className="text-left text-red-500 font-medium">Cerrar sesión</button>
             </>
           ) : (

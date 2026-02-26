@@ -49,20 +49,20 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="flex items-center gap-8 pt-8 text-gray-500 border-t border-white/5">
+            <div className="flex items-center gap-8 pt-8 text-gray-400 border-t border-white/5">
               <div className="flex flex-col">
                 <span className="text-white font-bold text-2xl">50k+</span>
-                <span className="text-xs uppercase tracking-tighter">Ventas</span>
+                <span className="text-xs uppercase tracking-tighter text-gray-300">Ventas</span>
               </div>
               <div className="w-px h-8 bg-white/10" />
               <div className="flex flex-col">
                 <span className="text-white font-bold text-2xl">24/7</span>
-                <span className="text-xs uppercase tracking-tighter">Soporte</span>
+                <span className="text-xs uppercase tracking-tighter text-gray-300">Soporte</span>
               </div>
               <div className="w-px h-8 bg-white/10" />
               <div className="flex flex-col">
                 <span className="text-white font-bold text-2xl">100%</span>
-                <span className="text-xs uppercase tracking-tighter">Garantía</span>
+                <span className="text-xs uppercase tracking-tighter text-gray-300">Garantía</span>
               </div>
             </div>
           </div>
