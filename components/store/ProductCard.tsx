@@ -15,7 +15,7 @@ type Product = {
 }
 
 export default function ProductCard({ product }: { product: Product }) {
-  const descuento = product.compare_price
+  const descuento = product.compare_price && product.compare_price > product.price
     ? Math.round(((product.compare_price - product.price) / product.compare_price) * 100)
     : null
 

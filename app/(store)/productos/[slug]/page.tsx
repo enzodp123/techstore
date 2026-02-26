@@ -22,7 +22,7 @@ export default async function ProductoDetallePage({
 
   if (!producto) notFound()
 
-  const descuento = producto.compare_price
+  const descuento = producto.compare_price && producto.compare_price > producto.price
     ? Math.round(((producto.compare_price - producto.price) / producto.compare_price) * 100)
     : null
 

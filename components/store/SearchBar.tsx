@@ -16,6 +16,7 @@ export default function SearchBar() {
     const [isSearching, setIsSearching] = useState(false)
 
     const searchRef = useRef<HTMLDivElement>(null)
+    const inputRef = useRef<HTMLInputElement>(null)
     const router = useRouter()
     const supabase = createClient()
 
@@ -29,6 +30,14 @@ export default function SearchBar() {
         document.addEventListener('mousedown', handleClickOutside)
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
+
+    // Foco en el input al abrir
+    useEffect(() => {
+        if (isOpen && inputRef.current) {
+            inputRef.current.focus()
+        }
+    }, [isOpen])
+
 
     // Buscar en Supabase
     useEffect(() => {
@@ -80,11 +89,11 @@ export default function SearchBar() {
 
             {/* Input Expandido */}
             {isOpen && (
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center bg-zinc-900/90 backdrop-blur-md border border-zinc-700 rounded-full px-4 py-2 w-72 animate-in fade-in zoom-in-95 duration-200 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center bg-zinc-900/90 backdrop-blur-md border border-zinc-700 rounded-full px-4 py-2 w-72 animate-in fade-in zoom-in-95 duration-200 shadow-[0_0_30px_rgba(0,0,0,0.5)] z-50">
                     <Search size={18} className="text-zinc-400 mr-2 min-w-max" />
                     <form onSubmit={handleSubmit} className="flex-1">
                         <input
-                            autoFocus
+                            ref={inputRef}
                             type="text"
                             placeholder="Buscar productos..."
                             value={query}
@@ -98,7 +107,7 @@ export default function SearchBar() {
 
             {/* Resultados Autocompletado */}
             {isOpen && query.trim() !== '' && (
-                <div className="absolute top-full right-0 mt-4 w-80 bg-zinc-900/95 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl animate-in slide-in-from-top-2">
+                <div className="absolute top-full right-0 mt-4 w-80 bg-zinc-900/95 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl animate-in slide-in-from-top-2 z-50">
                     {results.length > 0 ? (
                         <div className="flex flex-col">
                             {results.map((product) => (

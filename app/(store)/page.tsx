@@ -67,13 +67,13 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="relative group perspective-1000 hidden md:block">
+          <div className="relative group perspective-1000 hidden md:block w-full aspect-[4/5] max-w-md mx-auto">
             <div className="absolute inset-0 bg-blue-500/20 blur-[100px] rounded-full group-hover:bg-blue-500/30 transition-colors" />
             <OptimizedImage
               src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=2070"
               alt="High-end PC"
               fill
-              className="relative w-full rounded-2xl shadow-2xl border border-white/10 transform transition-transform duration-700 group-hover:scale-105 group-hover:-rotate-2 object-cover aspect-[4/5]"
+              className="rounded-2xl shadow-2xl border border-white/10 transform transition-transform duration-700 group-hover:scale-105 group-hover:-rotate-2 object-cover"
             />
             {/* Float Elements */}
             <div className="absolute -top-6 -right-6 glass p-4 rounded-2xl animate-bounce duration-[3000ms]">
