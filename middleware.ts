@@ -35,11 +35,11 @@ export async function middleware(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
 
     const isDashboardRoute = request.nextUrl.pathname.startsWith('/dashboard')
-    const adminEmail = process.env.ADMIN_EMAIL
+    const adminEmail = process.env.ADMIN_EMAIL || process.env.NEXT_PUBLIC_ADMIN_EMAIL
 
     // Ensure only the designated admin can access ANY route within /dashboard
     if (isDashboardRoute) {
-        if (!user || user.email !== adminEmail) {
+        if (!user || !adminEmail || user.email?.toLowerCase() !== adminEmail.toLowerCase()) {
             // Redirect unauthorized users to the login page
             return NextResponse.redirect(new URL('/login', request.url))
         }
