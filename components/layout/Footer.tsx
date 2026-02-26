@@ -16,15 +16,15 @@ export default function Footer() {
             Líderes en hardware de alto rendimiento. Construyendo el futuro de la computación con componentes de grado industrial.
           </p>
           <div className="flex items-center gap-4">
-            <Link href="#" aria-label="Twitter" className="w-10 h-10 rounded-xl glass flex items-center justify-center hover:bg-blue-600 transition-colors">
+            <span aria-label="Twitter" className="w-10 h-10 rounded-xl glass flex items-center justify-center opacity-50 cursor-not-allowed" title="Próximamente">
               <Twitter size={18} />
-            </Link>
-            <Link href="#" aria-label="Github" className="w-10 h-10 rounded-xl glass flex items-center justify-center hover:bg-white/10 transition-colors">
+            </span>
+            <span aria-label="Github" className="w-10 h-10 rounded-xl glass flex items-center justify-center opacity-50 cursor-not-allowed" title="Próximamente">
               <Github size={18} />
-            </Link>
-            <Link href="#" aria-label="Instagram" className="w-10 h-10 rounded-xl glass flex items-center justify-center hover:bg-white/10 transition-colors">
+            </span>
+            <span aria-label="Instagram" className="w-10 h-10 rounded-xl glass flex items-center justify-center opacity-50 cursor-not-allowed" title="Próximamente">
               <Instagram size={18} />
-            </Link>
+            </span>
           </div>
         </div>
 
@@ -41,19 +41,19 @@ export default function Footer() {
         <div>
           <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Empresa</h4>
           <ul className="space-y-4 text-sm text-gray-400">
-            <li><Link href="#" className="hover:text-blue-400 transition-colors">Sobre TechStore</Link></li>
-            <li><Link href="#" className="hover:text-blue-400 transition-colors">Sostenibilidad</Link></li>
-            <li><Link href="#" className="hover:text-blue-400 transition-colors">Prensa</Link></li>
-            <li><Link href="#" className="hover:text-blue-400 transition-colors">Contacto</Link></li>
+            <li><span className="text-gray-600 cursor-not-allowed" title="Próximamente">Sobre TechStore</span></li>
+            <li><span className="text-gray-600 cursor-not-allowed" title="Próximamente">Sostenibilidad</span></li>
+            <li><span className="text-gray-600 cursor-not-allowed" title="Próximamente">Prensa</span></li>
+            <li><span className="text-gray-600 cursor-not-allowed" title="Próximamente">Contacto</span></li>
           </ul>
         </div>
 
         <div>
           <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Soporte</h4>
           <ul className="space-y-4 text-sm text-gray-400">
-            <li><Link href="#" className="hover:text-blue-400 transition-colors">Centro de Ayuda</Link></li>
-            <li><Link href="#" className="hover:text-blue-400 transition-colors">Garantías</Link></li>
-            <li><Link href="#" className="hover:text-blue-400 transition-colors">Envíos y Tracking</Link></li>
+            <li><span className="text-gray-600 cursor-not-allowed" title="Próximamente">Centro de Ayuda</span></li>
+            <li><span className="text-gray-600 cursor-not-allowed" title="Próximamente">Garantías</span></li>
+            <li><span className="text-gray-600 cursor-not-allowed" title="Próximamente">Envíos y Tracking</span></li>
             <li className="flex items-center gap-2 text-blue-400 font-medium">
               <Mail size={16} /> support@techstore.io
             </li>
@@ -65,10 +65,10 @@ export default function Footer() {
         <p className="text-gray-400 text-xs">
           © 2024 TechStore. Todos los derechos reservados. Diseñado para el alto rendimiento.
         </p>
-        <div className="flex gap-8 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-          <Link href="#" className="hover:text-white transition-colors">Privacidad</Link>
-          <Link href="#" className="hover:text-white transition-colors">Términos</Link>
-          <Link href="#" className="hover:text-white transition-colors">Cookies</Link>
+        <div className="flex gap-8 text-[10px] text-gray-600 font-bold uppercase tracking-widest">
+          <span className="cursor-not-allowed" title="Próximamente">Privacidad</span>
+          <span className="cursor-not-allowed" title="Próximamente">Términos</span>
+          <span className="cursor-not-allowed" title="Próximamente">Cookies</span>
         </div>
       </div>
     </footer>

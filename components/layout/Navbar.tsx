@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { ShoppingCart, Menu, X, Cpu, User, LogOut, Package } from 'lucide-react'
+import { ShoppingCart, Menu, X, Cpu, User, LogOut, Package, Heart } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
+import { useWishlistStore } from '@/store/wishlistStore'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { User as SupabaseUser } from '@supabase/supabase-js'
@@ -12,8 +13,12 @@ import SearchBar from '@/components/store/SearchBar'
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [user, setUser] = useState<SupabaseUser | null>(null)
+
   const items = useCartStore((s) => s.items)
   const totalItems = items.reduce((a, i) => a + i.quantity, 0)
+
+  const wishlistItems = useWishlistStore((s) => s.items)
+  const totalWishlist = wishlistItems.length
   const supabase = createClient()
   const router = useRouter()
 
@@ -50,11 +55,26 @@ export default function Navbar() {
         <div className="flex items-center gap-5 relative z-50">
           <SearchBar />
 
+          {/* Favoritos */}
+          {user && (
+            <Link href="/favoritos" className="relative text-gray-300 hover:text-red-400 transition-colors group">
+              <Heart size={22} className={totalWishlist > 0 ? 'text-red-500 fill-red-500/20' : ''} />
+              {totalWishlist > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center ring-2 ring-black">
+                  {totalWishlist}
+                </span>
+              )}
+            </Link>
+          )}
+
+          {/* Carrito */}
           <Link href="/carrito" className="relative text-gray-300 hover:text-white transition-colors group">
-            <ShoppingCart size={22} />
-            <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center ring-2 ring-black">
-              {totalItems}
-            </span>
+            <ShoppingCart size={22} className={totalItems > 0 ? 'text-blue-400' : ''} />
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center ring-2 ring-black">
+                {totalItems}
+              </span>
+            )}
           </Link>
 
           <div className="h-6 w-px bg-white/10 hidden md:block" />
@@ -101,6 +121,10 @@ export default function Navbar() {
           <div className="h-px bg-white/10" />
           {user ? (
             <>
+              <Link href="/favoritos" className="text-gray-300 hover:text-red-400 flex items-center justify-between" onClick={() => setMenuOpen(false)}>
+                <div className="flex items-center gap-2"><Heart size={18} /> Favoritos</div>
+                {totalWishlist > 0 && <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">{totalWishlist}</span>}
+              </Link>
               <Link href="/mis-compras" className="text-gray-300 hover:text-white flex items-center gap-2" onClick={() => setMenuOpen(false)}>
                 <Package size={18} /> Mis Compras
               </Link>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
+import WishlistProvider from '@/components/store/WishlistProvider'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -31,6 +32,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${spaceGrotesk.variable} ${inter.variable} font-sans bg-black text-white antialiased`}>
+        <WishlistProvider />
         {children}
       </body>
     </html>

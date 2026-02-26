@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import OptimizedImage from './OptimizedImage'
 import AddToCartButton from './AddToCartButton'
+import WishlistButton from './WishlistButton'
 
 type Product = {
   id: string
@@ -16,7 +17,7 @@ type Product = {
 
 export default function ProductCard({ product }: { product: Product }) {
   const descuento = product.compare_price && product.compare_price > product.price
-    ? Math.round(((product.compare_price - product.price) / product.compare_price) * 100)
+    ? Math.floor(((product.compare_price - product.price) / product.compare_price) * 100)
     : null
 
   return (
@@ -33,8 +34,8 @@ export default function ProductCard({ product }: { product: Product }) {
           className="group-hover:scale-105 transition-transform duration-500"
         />
 
-        {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+        {/* Badges y Botón Favorito */}
+        <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
           {descuento !== null && descuento > 0 && (
             <span className="bg-red-500/90 backdrop-blur-sm text-white text-[10px] font-black px-2 py-1 rounded-md shadow-lg">
               -{descuento}%
@@ -45,6 +46,10 @@ export default function ProductCard({ product }: { product: Product }) {
               DESTACADO
             </span>
           )}
+        </div>
+
+        <div className="absolute top-3 right-3 z-10">
+          <WishlistButton product={product} className="bg-black/40 backdrop-blur-md p-1.5 rounded-full hover:bg-black/60" />
         </div>
       </div>
 
