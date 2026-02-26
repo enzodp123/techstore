@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { ShoppingCart, Star, Package } from 'lucide-react'
 import AddToCartButton from '@/components/store/AddToCartButton'
+import OptimizedImage from '@/components/store/OptimizedImage'
 
 export default async function ProductoDetallePage({
   params,
@@ -35,16 +36,13 @@ export default async function ProductoDetallePage({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
         {/* Imagen */}
-        <div className="bg-gray-100 rounded-2xl h-96 flex items-center justify-center overflow-hidden">
-          {producto.product_images?.[0]?.url ? (
-            <img
-              src={producto.product_images[0].url}
-              alt={producto.name}
-              className="w-full h-full object-cover rounded-2xl"
-            />
-          ) : (
-            <span className="text-gray-400">Sin imagen</span>
-          )}
+        <div className="bg-zinc-900 rounded-3xl h-[500px] relative overflow-hidden group shadow-2xl border border-white/5">
+          <OptimizedImage
+            src={producto.product_images?.[0]?.url || null}
+            alt={producto.name}
+            fill
+            className="group-hover:scale-105 transition-transform duration-700"
+          />
         </div>
 
         {/* Info */}
@@ -54,7 +52,7 @@ export default async function ProductoDetallePage({
 
           {/* Rating placeholder */}
           <div className="flex items-center gap-1 mb-4">
-            {[1,2,3,4,5].map((s) => (
+            {[1, 2, 3, 4, 5].map((s) => (
               <Star key={s} size={16} className="text-yellow-400 fill-yellow-400" />
             ))}
             <span className="text-sm text-gray-400 ml-1">Sin reseñas aún</span>

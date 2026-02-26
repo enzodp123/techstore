@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { compressAndConvertToWebP } from '@/lib/image-optimization'
 
 interface Category {
   id: string
@@ -78,10 +79,13 @@ export default function NuevoProductoPage() {
     let imageUrl = null
 
     if (imageFile) {
-      const fileName = `${Date.now()}-${imageFile.name}`
+      // Optimizar imagen antes de subir
+      const optimizedFile = await compressAndConvertToWebP(imageFile);
+      const fileName = `${Date.now()}-${optimizedFile.name}`;
+
       const { error: uploadError } = await supabase.storage
         .from('products')
-        .upload(fileName, imageFile)
+        .upload(fileName, optimizedFile);
 
       if (uploadError) {
         alert('Error al subir imagen: ' + uploadError.message)

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, Cpu, Monitor, MemoryStick, HardDrive, Zap, ShieldCheck, Globe } from 'lucide-react'
+import OptimizedImage from '@/components/store/OptimizedImage'
 
 export const revalidate = 3600
 
@@ -68,9 +69,10 @@ export default function HomePage() {
 
           <div className="relative group perspective-1000 hidden md:block">
             <div className="absolute inset-0 bg-blue-500/20 blur-[100px] rounded-full group-hover:bg-blue-500/30 transition-colors" />
-            <img
+            <OptimizedImage
               src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=2070"
               alt="High-end PC"
+              fill
               className="relative w-full rounded-2xl shadow-2xl border border-white/10 transform transition-transform duration-700 group-hover:scale-105 group-hover:-rotate-2 object-cover aspect-[4/5]"
             />
             {/* Float Elements */}
