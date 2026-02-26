@@ -31,14 +31,6 @@ export default function SearchBar() {
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
 
-    // Foco en el input al abrir
-    useEffect(() => {
-        if (isOpen && inputRef.current) {
-            inputRef.current.focus()
-        }
-    }, [isOpen])
-
-
     // Buscar en Supabase
     useEffect(() => {
         const fetchResults = async () => {
@@ -74,48 +66,63 @@ export default function SearchBar() {
     }
 
     return (
-        <div className="relative" ref={searchRef}>
+        <div
+            className={`relative flex items-center transition-all duration-300 ease-in-out ${isOpen ? 'w-[200px] sm:w-[260px] md:w-[280px]' : 'w-[40px]'} h-[40px]`}
+            ref={searchRef}
+        >
             {/* Botón Icono */}
             {!isOpen && (
                 <button
                     aria-label="Buscar"
                     onClick={() => setIsOpen(true)}
-                    className="text-zinc-300 hover:text-white transition-colors relative group flex items-center p-2"
+                    className="text-zinc-300 hover:text-white transition-colors relative group flex items-center justify-center w-full h-full"
                 >
                     <Search size={22} />
-                    <span className="absolute bottom-1 left-2 right-2 h-0.5 bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                    <span className="absolute bottom-1 left-3 right-3 h-0.5 bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                 </button>
             )}
 
             {/* Input Expandido */}
             {isOpen && (
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center bg-zinc-900/90 backdrop-blur-md border border-zinc-700 rounded-full px-4 py-2 w-72 animate-in fade-in zoom-in-95 duration-200 shadow-[0_0_30px_rgba(0,0,0,0.5)] z-50">
-                    <Search size={18} className="text-zinc-400 mr-2 min-w-max" />
-                    <form onSubmit={handleSubmit} className="flex-1">
+                <div className="flex items-center bg-zinc-900/95 backdrop-blur-xl border border-zinc-700/50 rounded-full px-4 w-full h-full shadow-lg z-50">
+                    <Search size={18} className="text-zinc-400 mr-2 shrink-0" />
+                    <form onSubmit={handleSubmit} className="flex-1 min-w-0">
                         <input
-                            ref={inputRef}
+                            autoFocus
                             type="text"
-                            placeholder="Buscar productos..."
+                            placeholder="Buscar componentes..."
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            className="bg-transparent border-none outline-none text-sm text-white placeholder:text-zinc-500 w-full"
+                            className="bg-transparent border-none outline-none text-sm text-white placeholder:text-zinc-500 w-full focus:ring-0 h-full"
                         />
                     </form>
-                    {isSearching && <Loader2 size={16} className="text-blue-500 animate-spin ml-2 min-w-max" />}
+                    {isSearching ? (
+                        <Loader2 size={16} className="text-blue-500 animate-spin ml-2 shrink-0" />
+                    ) : (
+                        query.trim() !== '' && (
+                            <button onClick={() => setQuery('')} className="ml-2 text-zinc-500 hover:text-white shrink-0">
+                                <span className="sr-only">Limpiar búsqueda</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                            </button>
+                        )
+                    )}
                 </div>
             )}
 
             {/* Resultados Autocompletado */}
             {isOpen && query.trim() !== '' && (
-                <div className="absolute top-full right-0 mt-4 w-80 bg-zinc-900/95 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl animate-in slide-in-from-top-2 z-50">
+                <div className="absolute top-full right-0 mt-3 w-screen max-w-[calc(100vw-2rem)] sm:max-w-md sm:w-[400px] bg-zinc-900/95 backdrop-blur-3xl border border-white/10 rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] animate-in fade-in slide-in-from-top-4 duration-300 z-50">
                     {results.length > 0 ? (
                         <div className="flex flex-col">
                             {results.map((product) => (
                                 <Link
                                     key={product.id}
                                     href={`/productos/${product.slug}`}
-                                    onClick={() => setIsOpen(false)}
-                                    className="flex items-center gap-4 p-4 hover:bg-white/5 border-b border-white/5 last:border-0 transition-colors group"
+                                    onClick={() => {
+                                        setIsOpen(false)
+                                        setQuery('')
+                                    }}
+                                    className="flex items-center gap-4 p-4 hover:bg-white/10 border-b border-white/5 last:border-0 transition-colors group cursor-pointer"
                                 >
                                     <div className="w-12 h-12 bg-black rounded-lg relative overflow-hidden shrink-0">
                                         <OptimizedImage

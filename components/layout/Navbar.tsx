@@ -21,8 +21,6 @@ export default function Navbar() {
   const totalWishlist = wishlistItems.length
   const supabase = createClient()
   const router = useRouter()
-  const isAdmin = user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL
-
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user))
     supabase.auth.onAuthStateChange((_event, session) => {
@@ -82,15 +80,6 @@ export default function Navbar() {
 
           {user ? (
             <div className="hidden md:flex items-center gap-4">
-              {/* Dashboard para Admin (basado en que el email provenga de alguna lista, aquí lo mostramos siempre pero el middleware lo protege) */}
-              {isAdmin && (
-                <Link href="/dashboard" className="text-gray-400 hover:text-white transition-colors p-1" title="Panel de Administración">
-                  <div className="w-8 h-8 rounded-full bg-blue-600/10 border border-blue-500/20 flex items-center justify-center hover:bg-blue-600/20">
-                    <User size={14} className="text-blue-400" />
-                  </div>
-                </Link>
-              )}
-
               {/* Mis Compras para Clientes */}
               <Link href="/mis-compras" className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg hover:bg-white/10">
                 <Package size={14} className="text-blue-400" />
@@ -131,11 +120,6 @@ export default function Navbar() {
               <Link href="/mis-compras" className="text-gray-300 hover:text-white flex items-center gap-2" onClick={() => setMenuOpen(false)}>
                 <Package size={18} /> Mis Compras
               </Link>
-              {isAdmin && (
-                <Link href="/dashboard" className="text-gray-300 hover:text-white flex items-center gap-2" onClick={() => setMenuOpen(false)}>
-                  <User size={18} /> Administración
-                </Link>
-              )}
               <button onClick={handleLogout} className="text-left text-red-500 font-medium">Cerrar sesión</button>
             </>
           ) : (
